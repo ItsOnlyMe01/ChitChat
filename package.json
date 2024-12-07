@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon Backend/server.js",
-    "build": "cd frontend && npm run build",
-    "start": "node Backend/server.js"
+    "start": "node Backend/server.js",
+    "server": "nodemon Backend/server.js",
+    "build": "npm install --legacy-peer-deeps && npm install --legacy--peerdeps"
   },
   "author": "Ritesh Singh",
   "license": "ISC",
