@@ -21,6 +21,7 @@ import UserListItem from "../UserAvatar/UserListItem";
 import { useSnackbar } from "../context/SnackBar";
 import LangSelect from "./LangSelect";
 import { getSender } from "../../config/chatLogics";
+import { useMediaQuery } from "@mui/material";
 const SlideDrawer = () => {
   const [search, setSearch] = useState();
   const [searchResult, setSearchResult] = useState();
@@ -29,6 +30,7 @@ const SlideDrawer = () => {
   const [open, setOpen] = useState(false);
 
   const showSnackbar = useSnackbar();
+  const isMobile = useMediaQuery("(max-width: 600px)");
 
   const {
     user,
@@ -154,9 +156,11 @@ const SlideDrawer = () => {
             <Typography>Search User</Typography>
           </IconButton>
         </Tooltip>
-        <Typography fontSize="2rem" fontFamily="Work Sans, sans-serif">
-          Talk-A-tive
-        </Typography>
+        {!isMobile && (
+          <Typography fontSize="2rem" fontFamily="Work Sans, sans-serif">
+            Talk-A-tive
+          </Typography>
+        )}
 
         <div
           style={{
@@ -225,7 +229,17 @@ const SlideDrawer = () => {
         </div>
       </Box>
 
-      <Drawer open={open} onClose={toggleDrawer(false)}>
+      <Drawer
+        open={open}
+        onClose={toggleDrawer(false)}
+        sx={{
+          "& .MuiDrawer-paper": {
+            width: "80%",
+            maxWidth: "100%",
+            overflowX: "hidden",
+          },
+        }}
+      >
         <Box sx={{ padding: 2 }}>
           <Typography
             variant="h5"

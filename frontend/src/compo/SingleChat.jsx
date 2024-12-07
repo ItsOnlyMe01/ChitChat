@@ -12,7 +12,6 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import SendIcon from "@mui/icons-material/Send";
 import { getSender, getSenderFull } from "../config/chatLogics";
 import ProfileModal from "./miscellaneous/profileModal";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import UpdateGroupChatModal from "./miscellaneous/UpdateGroupChatModal";
 import ScrollableChat from "./ScrollableChat";
 import io from "socket.io-client";
@@ -245,6 +244,10 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               height: "100%",
               borderRadius: 2,
               overflow: "hidden",
+              "@media (max-width: 600px)": {
+                background: "white",
+                padding: 0,
+              },
             }}
           >
             {loading ? (
@@ -295,7 +298,16 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 variant="outlined"
                 fullWidth
                 placeholder="Type a message..."
-                sx={{ backgroundColor: "#fff" }}
+                sx={{
+                  backgroundColor: "#fff",
+                  "@media (max-width: 600px)": {
+                    backgroundColor: "#e0f7ff",
+                  },
+                  "::placeholder": {
+                    color: "black", // Light gray color for placeholder text
+                    opacity: 4,
+                  },
+                }}
                 value={newMessage}
                 onChange={typingHandler}
                 onKeyDown={sendMessage}
