@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node Backend/server.js",
+    "start": "Backend/server.js",
     "server": "node Backend/server.js",
     "build": "npm install --legacy-peer-deeps && npm install --legacy--peerdeps"
   },
