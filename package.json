@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node Backend/server.js",
-    "server": "nodemon Backend/server.js",
+    "server": "node Backend/server.js",
     "build": "npm install --legacy-peer-deeps && npm install --legacy--peerdeps"
   },
   "author": "Ritesh Singh",
