@@ -37,15 +37,14 @@ app.use(notFound);
 app.use(errorHandlers);
 
 const PORT = process.env.PORT || 5000;
-const server = app.listen(
-  5000,
-  console.log(`Server is listening to port ${process.env.PORT}`)
-);
+const server = app.listen(PORT, () => {
+  console.log(`Server is listening on port ${PORT}`);
+});
 
 const io = require("socket.io")(server, {
   pingTimeout: 60000,
   cors: {
-    origin: "http://localhost:5173",
+    origin: "*",
   },
 });
 

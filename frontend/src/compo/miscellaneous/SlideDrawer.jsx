@@ -229,17 +229,7 @@ const SlideDrawer = () => {
         </div>
       </Box>
 
-      <Drawer
-        open={open}
-        onClose={toggleDrawer(false)}
-        sx={{
-          "& .MuiDrawer-paper": {
-            width: "80%",
-            maxWidth: "100%",
-            overflowX: "hidden",
-          },
-        }}
-      >
+      <Drawer open={open} onClose={toggleDrawer(false)}>
         <Box sx={{ padding: 2 }}>
           <Typography
             variant="h5"
