@@ -18,10 +18,7 @@ import io from "socket.io-client";
 import Lottie from "react-lottie";
 import animationData from "../aniamtions/typing.json";
 
-const ENDPOINT =
-  window.location.hostname === "localhost"
-    ? "http://localhost:5000" // Local development ke liye
-    : window.location.origin;
+const ENDPOINT = "https://chitchat-hsxm.onrender.com";
 var socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
