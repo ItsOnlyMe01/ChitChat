@@ -38,10 +38,10 @@ async function autoDetectAndTranslate(text, targetLanguage) {
           },
           {
             role: "user",
-            content: `Translate the following message into ${safeLang}. 
-If it is already in ${safeLang}, return it unchanged.
+            content: `Translate the following message into ${safeLang}.
+Return ONLY the translated text. Do not add explanations, quotes, or extra words.
 
-Message: "${text}"`,
+Message: ${text}`,
           },
         ],
         temperature: 0.2,
