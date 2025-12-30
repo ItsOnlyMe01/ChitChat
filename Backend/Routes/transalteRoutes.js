@@ -17,7 +17,7 @@ Text: "${text}"
 `;
 
     const response = await axios.post(
-      "https://api-inference.huggingface.co/models/google/mt5-small",
+      "https://api-inference.huggingface.co/models/facebook/m2m100_418M",
       { inputs: prompt },
       {
         headers: {
