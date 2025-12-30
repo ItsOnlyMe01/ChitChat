@@ -47,7 +47,7 @@ const HomePage = () => {
         }}
       >
         <Typography variant="h4" fontFamily="Work Sans" color="black">
-          Talk-A-Tive
+          ChitChat
         </Typography>
       </Box>
       <Box

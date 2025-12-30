@@ -158,7 +158,7 @@ const SlideDrawer = () => {
         </Tooltip>
         {!isMobile && (
           <Typography fontSize="2rem" fontFamily="Work Sans, sans-serif">
-            Talk-A-tive
+            ChitChat
           </Typography>
         )}
 
