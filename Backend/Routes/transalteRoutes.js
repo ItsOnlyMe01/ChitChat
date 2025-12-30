@@ -2,39 +2,55 @@ const express = require("express");
 const router = express.Router();
 require("dotenv").config({ path: "../.env" });
 
-const { Translate } = require("@google-cloud/translate").v2;
-const translate = new Translate({ key: process.env.GOOGLE_API });
+const axios = require("axios");
 
+// HuggingFace-based API
 async function autoDetectAndTranslate(text, targetLanguage) {
-  console.log("lang is");
-  console.log(targetLanguage);
   try {
-    const [detection] = await translate.detect(text);
-    const detectedLanguage = detection.language;
-    console.log(`Detected language: ${detectedLanguage}`);
+    const prompt = `
+Detect the language even if written in English letters (Hinglish, Tanglish, Bhojpuri).
+Transliterate to native script if needed.
+Translate accurately to ${targetLanguage}.
+Return ONLY the translated text.
 
-    const [translation] = await translate.translate(text, targetLanguage);
-    console.log(`Translated text: ${translation}`);
+Text: "${text}"
+`;
 
-    return translation;
+    const response = await axios.post(
+      "https://api-inference.huggingface.co/models/google/mt5-small",
+      { inputs: prompt },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.TRANSLATE_API}`,
+          "Content-Type": "application/json",
+        },
+        timeout: 10000,
+      }
+    );
+
+    // HF response format
+    const translated = response.data?.[0]?.generated_text || text;
+
+    return translated;
   } catch (error) {
-    console.error("Error during language detection or translation:", error);
+    console.error("Translation error:", error.message);
+    return text; // fallback for chat
   }
 }
 
 router.post("/", async (req, res) => {
   const { text, selectedLanguage } = req.body;
+
   if (!text || !selectedLanguage) {
     return res
       .status(400)
       .json({ error: "Text and targetLanguage are required" });
   }
+
   try {
     const translation = await autoDetectAndTranslate(text, selectedLanguage);
 
     res.json({ translatedText: translation });
-
-    console.log(`Message translated to your language: ${translation}`);
   } catch (error) {
     console.error("Error during translation:", error);
     res.status(500).json({ error: "Error during translation" });
