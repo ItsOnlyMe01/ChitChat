@@ -3,8 +3,29 @@ const router = express.Router();
 const axios = require("axios");
 require("dotenv").config({ path: "../.env" });
 
+function normalizeLanguage(lang) {
+  if (!lang) return "English";
+
+  const map = {
+    hi: "Hindi",
+    hindi: "Hindi",
+    ta: "Tamil",
+    tamil: "Tamil",
+    en: "English",
+    english: "English",
+    bhojpuri: "Bhojpuri",
+    bn: "Bengali",
+    te: "Telugu",
+    mr: "Marathi",
+  };
+
+  return map[lang.toLowerCase()] || "English";
+}
+
 async function autoDetectAndTranslate(text, targetLanguage) {
   try {
+    const safeLang = normalizeLanguage(targetLanguage);
+
     const response = await axios.post(
       "https://api.groq.com/openai/v1/chat/completions",
       {
@@ -13,14 +34,18 @@ async function autoDetectAndTranslate(text, targetLanguage) {
           {
             role: "system",
             content:
-              "You are a translator for Indian languages. Detect the language even if written in English letters (Hinglish, Bhojpuri, Tanglish,Any). Transliterate to native script if needed and translate accurately.",
+              "You are a translator for Indian languages. You understand Hinglish, Bhojpuri, Tanglish written in English letters.",
           },
           {
             role: "user",
-            content: `Translate this text to ${targetLanguage}: "${text}"`,
+            content: `Translate the following message into ${safeLang}. 
+If it is already in ${safeLang}, return it unchanged.
+
+Message: "${text}"`,
           },
         ],
         temperature: 0.2,
+        max_tokens: 100,
       },
       {
         headers: {
@@ -33,8 +58,8 @@ async function autoDetectAndTranslate(text, targetLanguage) {
 
     return response.data.choices[0].message.content.trim();
   } catch (err) {
-    console.error("Groq translation error:", err.message);
-    return text; // chat never breaks
+    console.error("Groq translation error:", err.response?.data || err.message);
+    return text;
   }
 }
 
