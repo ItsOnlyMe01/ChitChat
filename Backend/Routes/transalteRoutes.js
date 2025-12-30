@@ -1,40 +1,40 @@
 const express = require("express");
 const router = express.Router();
+const axios = require("axios");
 require("dotenv").config({ path: "../.env" });
 
-const axios = require("axios");
-
-// HuggingFace-based API
 async function autoDetectAndTranslate(text, targetLanguage) {
   try {
-    const prompt = `
-Detect the language even if written in English letters (Hinglish, Tanglish, Bhojpuri).
-Transliterate to native script if needed.
-Translate accurately to ${targetLanguage}.
-Return ONLY the translated text.
-
-Text: "${text}"
-`;
-
     const response = await axios.post(
-      "https://api-inference.huggingface.co/models/facebook/m2m100_418M",
-      { inputs: prompt },
+      "https://api.groq.com/openai/v1/chat/completions",
+      {
+        model: "llama3-8b-8192",
+        messages: [
+          {
+            role: "system",
+            content:
+              "You are a translator for Indian languages. Detect the language even if written in English letters (Hinglish, Bhojpuri, Tanglish,Any). Transliterate to native script if needed and translate accurately.",
+          },
+          {
+            role: "user",
+            content: `Translate this text to ${targetLanguage}: "${text}"`,
+          },
+        ],
+        temperature: 0.2,
+      },
       {
         headers: {
-          Authorization: `Bearer ${process.env.TRANSLATE_API}`,
+          Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
           "Content-Type": "application/json",
         },
-        timeout: 10000,
+        timeout: 8000,
       }
     );
 
-    // HF response format
-    const translated = response.data?.[0]?.generated_text || text;
-
-    return translated;
-  } catch (error) {
-    console.error("Translation error:", error.message);
-    return text; // fallback for chat
+    return response.data.choices[0].message.content.trim();
+  } catch (err) {
+    console.error("Groq translation error:", err.message);
+    return text; // chat never breaks
   }
 }
 
@@ -42,19 +42,12 @@ router.post("/", async (req, res) => {
   const { text, selectedLanguage } = req.body;
 
   if (!text || !selectedLanguage) {
-    return res
-      .status(400)
-      .json({ error: "Text and targetLanguage are required" });
+    return res.status(400).json({ error: "Missing fields" });
   }
 
-  try {
-    const translation = await autoDetectAndTranslate(text, selectedLanguage);
+  const translatedText = await autoDetectAndTranslate(text, selectedLanguage);
 
-    res.json({ translatedText: translation });
-  } catch (error) {
-    console.error("Error during translation:", error);
-    res.status(500).json({ error: "Error during translation" });
-  }
+  res.json({ translatedText });
 });
 
 module.exports = router;
