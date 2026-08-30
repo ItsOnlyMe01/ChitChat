@@ -272,7 +272,10 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   };
 
   const sendMessage = async (event) => {
-    if ((event.key === "Enter" || event.type === "click") && newMessage) {
+    if (event && event.preventDefault) {
+      event.preventDefault();
+    }
+    if ((!event || event.key === "Enter" || event.type === "click" || event.type === "submit") && newMessage) {
       socket.emit("Stop typing", selectedChat._id);
       try {
         const config = {
@@ -457,7 +460,11 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 <ScrollableChat messages={messages} />
               </div>
             )}
-            <>
+            <form
+              autoComplete="off"
+              onSubmit={sendMessage}
+              style={{ width: "100%" }}
+            >
               {isTyping && (
                 <Box
                   sx={{
@@ -481,10 +488,10 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               <TextField
                 variant="outlined"
                 fullWidth
-                placeholder="Type a message..."
+                placeholder="Write a reply..."
                 autoComplete="one-time-code"
-                name="chat-message"
-                id="chat-message"
+                name="chat_msg_payload"
+                id="msg_body"
                 sx={{
                   backgroundColor: "#fff",
                   "& .MuiOutlinedInput-root": {
@@ -505,11 +512,15 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 }}
                 value={newMessage}
                 onChange={typingHandler}
-                onKeyDown={sendMessage}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    sendMessage(e);
+                  }
+                }}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
-                      <IconButton color="primary" onClick={sendMessage}>
+                      <IconButton color="primary" type="submit">
                         <SendIcon sx={{ color: "#3182CE" }} />
                       </IconButton>
                     </InputAdornment>
@@ -517,7 +528,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 }}
                 required
               />
-            </>
+            </form>
           </Box>
         </>
       ) : (
