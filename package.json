@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node Backend/server.js",
     "server": "node Backend/server.js",
-    "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend"
+    "build": "npm install && npm install --prefix frontend --production=false && npm run build --prefix frontend"
   },
   "author": "Ritesh Singh",
   "license": "ISC",
