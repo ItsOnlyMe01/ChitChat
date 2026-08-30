@@ -40,12 +40,23 @@ const registerUser = asynHandler(async (req, res) => {
 
 const authUser = asynHandler(async (req, res) => {
   const { email, password } = req.body;
-  const user = await User.findOne({ email });
+  let user = await User.findOne({ email });
+
+  // Automatically create the guest user if it doesn't exist yet
+  if (!user && email === "guest@email.com") {
+    user = await User.create({
+      name: "Guest User",
+      email: "guest@email.com",
+      password: "123456",
+      pic: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
+    });
+  }
+
   console.log(user);
   if (user && (await user.matchPassword(password))) {
     res.json({
       _id: user._id,
-      name: User.name,
+      name: user.name,
       email: user.email,
       pic: user.pic,
       token: generateToken(user._id),

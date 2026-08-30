@@ -43,7 +43,7 @@ const HomePage = () => {
         height: "100vh",
         position: "relative",
         overflow: "hidden",
-        background: "linear-gradient(135deg, #F7FAFC 0%, #EDF2F7 50%, #EBF8FF 100%)",
+        background: "linear-gradient(135deg, #a5b4fc 0%, #818cf8 50%, #c084fc 100%)",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
