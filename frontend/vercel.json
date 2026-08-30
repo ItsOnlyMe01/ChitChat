@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://chitchat-hsxm.onrender.com/api/:path*"
+    }
+  ]
+}
