@@ -14,7 +14,7 @@ import {
 import React, { useEffect, useState } from "react";
 import CircleNotificationsIcon from "@mui/icons-material/CircleNotifications";
 import { ChatState } from "../context/chatProvider";
-import ProfileModal from "./profileModal";
+import ProfileModal from "./ProfileModal";
 import { useNavigate } from "react-router-dom";
 import ChatLoading from "./ChatLoading";
 import UserListItem from "../UserAvatar/UserListItem";

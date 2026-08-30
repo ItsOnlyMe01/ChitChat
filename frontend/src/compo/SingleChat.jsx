@@ -15,7 +15,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import SendIcon from "@mui/icons-material/Send";
 import PaletteIcon from "@mui/icons-material/Palette";
 import { getSender, getSenderFull } from "../config/chatLogics";
-import ProfileModal from "./miscellaneous/profileModal";
+import ProfileModal from "./miscellaneous/ProfileModal";
 import UpdateGroupChatModal from "./miscellaneous/UpdateGroupChatModal";
 import ScrollableChat from "./ScrollableChat";
 import io from "socket.io-client";
