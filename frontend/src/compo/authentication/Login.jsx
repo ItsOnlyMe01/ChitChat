@@ -78,6 +78,28 @@ const Login = () => {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+      <Button
+        variant="text"
+        size="small"
+        onClick={() => {
+          setEmail("guest@email.com");
+          setPassword("123456");
+          submitLogInForm("guest@email.com", "123456");
+        }}
+        sx={{
+          alignSelf: "flex-start",
+          textTransform: "none",
+          fontWeight: "600",
+          fontSize: "0.75rem",
+          color: "#4A5568",
+          padding: "2px 8px",
+          minWidth: "auto",
+          marginBottom: -1,
+          "&:hover": { backgroundColor: "#EDF2F7", color: "#3182CE" },
+        }}
+      >
+        Login as Guest
+      </Button>
       <TextField
         label="Email"
         variant="outlined"
@@ -127,26 +149,6 @@ const Login = () => {
         }}
       >
         {loading ? <CircularProgress size={24} color="inherit" /> : "Log In"}
-      </Button>
-      <Button
-        type="submit"
-        variant="outlined"
-        onClick={() => {
-          setEmail("guest@email.com");
-          setPassword("123456");
-          submitLogInForm("guest@email.com", "123456");
-        }}
-        sx={{
-          borderRadius: "8px",
-          textTransform: "none",
-          fontWeight: "medium",
-          padding: "10px",
-          borderColor: "#CBD5E0",
-          color: "#4A5568",
-          "&:hover": { borderColor: "#A0AEC0", backgroundColor: "#F7FAFC" },
-        }}
-      >
-        Login as Guest
       </Button>
 
       <Snackbar

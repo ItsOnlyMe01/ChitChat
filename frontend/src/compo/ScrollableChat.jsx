@@ -32,7 +32,9 @@ const ScrollableChat = ({ messages = [] }) => {
               >
                 <Avatar
                   sx={{
-                    margin: 2,
+                    margin: 0,
+                    marginRight: "8px",
+                    marginTop: "5px",
                     cursor: "pointer",
                     width: 30, // Custom width for smaller size
                     height: 30, // Custom height for smaller size
