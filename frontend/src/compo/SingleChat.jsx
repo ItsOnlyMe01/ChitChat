@@ -23,7 +23,7 @@ import Lottie from "react-lottie";
 import animationData from "../aniamtions/typing.json";
 import { useSnackbar } from "./context/SnackBar";
 
-const ENDPOINT = window.location.hostname === "localhost" ? "http://localhost:5000" : "https://chitchat-hsxm.onrender.com";
+const ENDPOINT = window.location.hostname === "localhost" ? "http://localhost:5000" : window.location.origin;
 var socket, selectedChatCompare;
 
 const backgroundsList = [
