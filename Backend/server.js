@@ -17,21 +17,20 @@ app.use("/api/chat", chatRoutes);
 app.use("/api/message", messageRoutes);
 app.use("/api/translate", translateRoutes);
 
-// //-----------------------------------DEPLOYMENT------------------------
+//-----------------------------------DEPLOYMENT------------------------
 
-// const __dirname1 = path.resolve();
-// if (process.env.NODE_ENV === "production") {
-//   app.use(express.static(path.join(__dirname1, "frontend/dist")));
-//   app.get("*", (_, res) => {
-//     res.sendFile(path.resolve(__dirname1, "frontend", "dist", "index.html"));
-//   });
-// } else {
-//   app.get("/", (req, res) => {
-//     res.send("Api is Running Succesfully!");
-//   });
-// }
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../frontend/dist")));
+  app.get("*", (_, res) => {
+    res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
+  });
+} else {
+  app.get("/", (req, res) => {
+    res.send("Api is Running Succesfully!");
+  });
+}
 
-// //-----------------------------------DEPLOYMENT------------------------
+//-----------------------------------DEPLOYMENT------------------------
 
 app.use(notFound);
 app.use(errorHandlers);
