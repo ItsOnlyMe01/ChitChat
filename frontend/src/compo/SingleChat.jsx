@@ -482,6 +482,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 variant="outlined"
                 fullWidth
                 placeholder="Type a message..."
+                autoComplete="off"
                 sx={{
                   backgroundColor: "#fff",
                   "& .MuiOutlinedInput-root": {
