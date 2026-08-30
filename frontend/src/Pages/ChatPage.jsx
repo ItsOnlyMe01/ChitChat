@@ -10,14 +10,14 @@ const ChatPage = () => {
   const [fetchAgain, setFetchAgain] = useState(false);
 
   return (
-    <div style={{ width: "100%" }}>
+    <div style={{ width: "100vw", height: "100dvh", display: "flex", flexDirection: "column", overflow: "hidden" }}>
       {user && <SlideDrawer />}
       <Box
         sx={{
           display: "flex",
           width: "100%",
           justifyContent: "center",
-          height: "calc(100vh - 65px)",
+          flex: 1,
           overflow: "hidden",
         }}
       >
