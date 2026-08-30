@@ -16,11 +16,10 @@ const Inbox = ({ fetchAgain, setFetchAgain }) => {
         padding: 3,
         backgroundColor: "white",
         width: { xs: "100%", md: "68%" },
-        height: "calc(100vh - 16px)",
-        borderRadius: "1rem",
-        borderWidth: "1px",
-        borderStyle: "solid",
-        borderColor: "grey.300",
+        height: "calc(100% - 24px)",
+        borderRadius: "12px",
+        border: "1px solid #E2E8F0",
+        boxShadow: "0 1px 3px 0 rgba(0,0,0,0.05)",
         overflowY: "auto",
       }}
     >

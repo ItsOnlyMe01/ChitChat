@@ -137,7 +137,6 @@ const Signup = () => {
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
       {/* FullName */}
-
       <TextField
         label="Full Name"
         type="text"
@@ -145,10 +144,10 @@ const Signup = () => {
         onChange={(e) => setName(e.target.value)}
         fullWidth
         required
+        sx={{ "& .MuiOutlinedInput-root": { borderRadius: "8px" } }}
       />
 
       {/* email */}
-
       <TextField
         label="Email"
         variant="outlined"
@@ -156,10 +155,10 @@ const Signup = () => {
         type="email"
         required
         onChange={(e) => setEmail(e.target.value)}
+        sx={{ "& .MuiOutlinedInput-root": { borderRadius: "8px" } }}
       />
 
       {/* password */}
-
       <FormControl variant="outlined" fullWidth required>
         <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
         <OutlinedInput
@@ -180,11 +179,11 @@ const Signup = () => {
           }
           label="Password"
           onChange={(e) => setPassword(e.target.value)}
+          sx={{ borderRadius: "8px" }}
         />
       </FormControl>
 
       {/* //ConfirmPassword */}
-
       <FormControl variant="outlined" fullWidth required>
         <InputLabel htmlFor="outlined-adornment-password">
           Confirm Password
@@ -209,17 +208,20 @@ const Signup = () => {
           }
           label="ConfirmPassword"
           onChange={(e) => setConfirmPassword(e.target.value)}
+          sx={{ borderRadius: "8px" }}
         />
       </FormControl>
 
       {/* Image */}
-
-      <Input
-        type="file"
-        accept="image/*"
-        required
-        onChange={(e) => postImagePicture(e.target.files[0])}
-      />
+      <Box sx={{ border: "1px dashed #CBD5E0", borderRadius: "8px", padding: "10px", display: "flex", flexDirection: "column", gap: 1 }}>
+        <Typography variant="caption" color="text.secondary">Upload Profile Picture (JPEG/PNG)</Typography>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => postImagePicture(e.target.files[0])}
+          style={{ cursor: "pointer", fontSize: "14px" }}
+        />
+      </Box>
 
       {pic && (
         <Box
@@ -240,10 +242,17 @@ const Signup = () => {
       <Button
         type="submit"
         variant="contained"
-        color="primary"
         onClick={submitSinupForm}
+        sx={{
+          borderRadius: "8px",
+          textTransform: "none",
+          fontWeight: "bold",
+          padding: "10px",
+          backgroundColor: "#3182CE",
+          "&:hover": { backgroundColor: "#2B6CB0" },
+        }}
       >
-        {loading ? <CircularProgress size={24} /> : "Sign Up"}
+        {loading ? <CircularProgress size={24} color="inherit" /> : "Sign Up"}
       </Button>
 
       {/* snackbar */}

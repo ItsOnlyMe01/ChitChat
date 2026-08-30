@@ -136,10 +136,10 @@ const SlideDrawer = () => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          background: "white",
+          backgroundColor: "white",
           width: "100%",
-          padding: "5px 10px 5px 10px",
-          borderWidth: "5px",
+          padding: "8px 24px",
+          borderBottom: "1px solid #E2E8F0",
         }}
       >
         <Tooltip
@@ -148,13 +148,22 @@ const SlideDrawer = () => {
           sx={{
             gap: "10px",
             padding: "4px 15px 4px 15px",
-            borderRadius: "3px",
+            borderRadius: "30px",
           }}
         >
-          <IconButton>
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <Typography>Search User</Typography>
-          </IconButton>
+          <Button
+            variant="text"
+            startIcon={<i className="fa-solid fa-magnifying-glass" style={{ color: "#718096" }}></i>}
+            sx={{
+              textTransform: "none",
+              color: "#4A5568",
+              fontWeight: "medium",
+              borderRadius: "20px",
+              "&:hover": { backgroundColor: "#EDF2F7" },
+            }}
+          >
+            Search User
+          </Button>
         </Tooltip>
         {!isMobile && (
           <Typography fontSize="2rem" fontFamily="Work Sans, sans-serif">
@@ -230,10 +239,10 @@ const SlideDrawer = () => {
       </Box>
 
       <Drawer open={open} onClose={toggleDrawer(false)}>
-        <Box sx={{ padding: 2 }}>
+        <Box sx={{ width: { xs: "280px", sm: "320px" }, padding: 3 }}>
           <Typography
-            variant="h5"
-            sx={{ paddingBottom: "10px", fontWeight: "bold" }}
+            variant="h6"
+            sx={{ paddingBottom: "15px", fontWeight: "bold", color: "text.primary" }}
           >
             Search Users
           </Typography>
@@ -244,37 +253,35 @@ const SlideDrawer = () => {
               alignItems: "center",
               backgroundColor: "#f5f5f5",
               borderRadius: "30px",
-              padding: "5px 15px",
+              padding: "4px 12px",
+              border: "1px solid #E2E8F0",
             }}
           >
             <Input
               type="text"
-              placeholder="Search..."
+              placeholder="Search by name or email..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
+              disableUnderline
               sx={{
                 flex: 1,
-                border: "none",
-                outline: "none",
-                fontSize: "16px",
-                paddingLeft: "10px",
-                borderRadius: "20px",
+                fontSize: "15px",
+                paddingLeft: "5px",
               }}
             />
             <IconButton
               onClick={handleSearch}
               sx={{
-                backgroundColor: "#4caf50",
+                backgroundColor: "#3182CE",
                 color: "#fff",
                 borderRadius: "50%",
-                padding: "7px",
-                marginLeft: "8px",
+                padding: "8px",
                 "&:hover": {
-                  backgroundColor: "#45a049",
+                  backgroundColor: "#2B6CB0",
                 },
               }}
             >
-              Go
+              <i className="fa-solid fa-magnifying-glass" style={{ fontSize: "14px" }}></i>
             </IconButton>
           </Box>
         </Box>

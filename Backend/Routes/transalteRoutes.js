@@ -29,23 +29,22 @@ async function autoDetectAndTranslate(text, targetLanguage) {
     const response = await axios.post(
       "https://api.groq.com/openai/v1/chat/completions",
       {
-        model: "llama-3.1-8b-instant",
+        model: "groq/compound-mini",
         messages: [
           {
             role: "system",
             content:
-              "You are a translator for Indian languages. You understand Hinglish, Bhojpuri, Tanglish written in English letters.",
+              "You are a translator for Indian languages. You understand Hinglish, Bhojpuri, Tanglish written in English letters. The input may consist of multiple messages separated by ' || '. Translate the message(s), keeping the ' || ' separators exactly intact in the output. Return ONLY the translated text, do not add any explanations, quotes, or extra words.",
           },
           {
             role: "user",
-            content: `Translate the following message into ${safeLang}.
-Return ONLY the translated text. Do not add explanations, quotes, or extra words.
+            content: `Translate the following message(s) into ${safeLang}. If there are ' || ' separators in the input, preserve them exactly in the output. Return ONLY the translated text. Do not add explanations, quotes, or extra words.
 
 Message: ${text}`,
           },
         ],
         temperature: 0.2,
-        max_tokens: 100,
+        max_tokens: 500,
       },
       {
         headers: {
@@ -70,9 +69,31 @@ router.post("/", async (req, res) => {
     return res.status(400).json({ error: "Missing fields" });
   }
 
-  const translatedText = await autoDetectAndTranslate(text, selectedLanguage);
+  try {
+    if (Array.isArray(text)) {
+      if (text.length === 0) return res.json({ translatedText: [] });
 
-  res.json({ translatedText });
+      // Joins multiple messages with a delimiter
+      const joinedText = text.join(" || ");
+      const translatedJoined = await autoDetectAndTranslate(joinedText, selectedLanguage);
+      
+      // Splits the translated string back into an array
+      const translatedArray = translatedJoined.split(" || ");
+
+      if (translatedArray.length === text.length) {
+        res.json({ translatedText: translatedArray });
+      } else {
+        // Fallback: If split lengths don't match, return original texts
+        res.json({ translatedText: text });
+      }
+    } else {
+      const translatedText = await autoDetectAndTranslate(text, selectedLanguage);
+      res.json({ translatedText });
+    }
+  } catch (error) {
+    console.error("Error during translation:", error);
+    res.status(500).json({ error: "Error during translation" });
+  }
 });
 
 module.exports = router;

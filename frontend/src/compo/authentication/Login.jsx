@@ -37,11 +37,13 @@ const Login = () => {
     setMessage("");
   };
 
-  const submitLogInForm = async () => {
+  const submitLogInForm = async (guestEmail, guestPassword) => {
     setLoading(true);
-    if (!email || !password) {
+    const activeEmail = typeof guestEmail === "string" ? guestEmail : email;
+    const activePassword = typeof guestPassword === "string" ? guestPassword : password;
+    if (!activeEmail || !activePassword) {
       setOpen(true);
-      setMessage("Kindly enter email and passsword!");
+      setMessage("Kindly enter email and password!");
       setLoading(false);
       return;
     }
@@ -51,7 +53,7 @@ const Login = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email: activeEmail, password: activePassword }),
       });
 
       const data = await response.json();
@@ -65,10 +67,10 @@ const Login = () => {
 
       localStorage.setItem("userInfo", JSON.stringify(data));
       setLoading(false);
-      setMessage("Login Successfull!");
+      setMessage("Login Successful!");
       navigate("/chats");
     } catch (error) {
-      setMessage(`Error Occured ${error.message}`);
+      setMessage(`Error Occurred ${error.message}`);
       setOpen(true);
       setLoading(false);
     }
@@ -83,6 +85,7 @@ const Login = () => {
         type="email"
         required
         onChange={(e) => setEmail(e.target.value)}
+        sx={{ "& .MuiOutlinedInput-root": { borderRadius: "8px" } }}
       />
       <FormControl variant="outlined" fullWidth required>
         <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
@@ -104,27 +107,44 @@ const Login = () => {
           }
           label="Password"
           onChange={(e) => setPassword(e.target.value)}
+          sx={{ borderRadius: "8px" }}
         />
       </FormControl>
 
       <Button
         type="submit"
         variant="contained"
-        color="primary"
-        onClick={submitLogInForm}
+        onClick={() => submitLogInForm()}
+        sx={{
+          borderRadius: "8px",
+          textTransform: "none",
+          fontWeight: "bold",
+          padding: "10px",
+          backgroundColor: "#3182CE",
+          "&:hover": { backgroundColor: "#2B6CB0" },
+        }}
       >
-        {loading ? <CircularProgress size={24} /> : "LoGIn"}
+        {loading ? <CircularProgress size={24} color="inherit" /> : "Log In"}
       </Button>
       <Button
         type="submit"
-        variant="contained"
-        sx={{ background: "gray", color: "white" }}
-        onClick={async () => {
-          setEmail("guest@email.com"), setPassword("123456");
-          setTimeout(submitLogInForm(), 100);
+        variant="outlined"
+        onClick={() => {
+          setEmail("guest@email.com");
+          setPassword("123456");
+          submitLogInForm("guest@email.com", "123456");
+        }}
+        sx={{
+          borderRadius: "8px",
+          textTransform: "none",
+          fontWeight: "medium",
+          padding: "10px",
+          borderColor: "#CBD5E0",
+          color: "#4A5568",
+          "&:hover": { borderColor: "#A0AEC0", backgroundColor: "#F7FAFC" },
         }}
       >
-        Login With Guest
+        Login as Guest
       </Button>
 
       <Snackbar

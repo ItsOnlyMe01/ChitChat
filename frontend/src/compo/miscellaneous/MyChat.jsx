@@ -58,38 +58,44 @@ const MyChat = ({ fetchAgain }) => {
         padding: 3,
         backgroundColor: "white",
         width: { xs: "100%", md: "31%" },
-        height: "calc(100vh - 16px)",
-        borderRadius: "1rem",
-        borderWidth: "1px",
-        borderStyle: "solid",
-        borderColor: "grey.300",
-        overflowY: "auto",
+        height: "calc(100% - 24px)",
+        borderRadius: "12px",
+        border: "1px solid #E2E8F0",
+        boxShadow: "0 1px 3px 0 rgba(0,0,0,0.05)",
       }}
     >
       <Box
         sx={{
-          paddingBottom: 3,
-          px: 3,
-          fontSize: { xs: "28px", md: "30px" },
+          paddingBottom: 2,
+          px: 1,
+          fontSize: { xs: "24px", md: "26px" },
           fontFamily: "Work sans",
+          fontWeight: "600",
           display: "flex",
           width: "100%",
           justifyContent: "space-between",
           alignItems: "center",
+          color: "text.primary",
         }}
       >
         My Chats
         <Button
           onClick={handleOpenModal}
+          variant="contained"
           sx={{
             display: "flex",
-            fontSize: { xs: "13px", md: "10px", lg: "17px" },
-            backgroundColor: "grey.400",
+            fontSize: { xs: "12px", md: "10px", lg: "13px" },
+            backgroundColor: "#3182CE",
             color: "white",
+            textTransform: "none",
+            borderRadius: "8px",
+            padding: "6px 12px",
+            fontWeight: "medium",
+            "&:hover": { backgroundColor: "#2B6CB0" },
           }}
           endIcon={<AddIcon />}
         >
-          New Group Chat
+          New Group
         </Button>
         <GroupChatModal open={openModal} onClose={handleCloseModal} />
       </Box>
@@ -97,18 +103,19 @@ const MyChat = ({ fetchAgain }) => {
         sx={{
           display: "flex",
           flexDirection: "column",
-          padding: 3,
-          background: "#F8F8F8",
+          padding: 2,
+          background: "#F7FAFC",
           width: "100%",
           height: "100%",
           borderRadius: "8px",
+          border: "1px solid #E2E8F0",
           overflow: "hidden",
         }}
       >
         {chats ? (
           <Stack
             sx={{
-              overflowY: "scroll",
+              overflowY: "auto",
               height: "100%",
             }}
           >
@@ -119,15 +126,19 @@ const MyChat = ({ fetchAgain }) => {
                 sx={{
                   cursor: "pointer",
                   backgroundColor:
-                    selectedChat === chat ? "#38B2AC" : "#E8E8E8",
-                  color: selectedChat === chat ? "white" : "black",
+                    selectedChat === chat ? "#3182CE" : "#EDF2F7",
+                  color: selectedChat === chat ? "white" : "#2D3748",
                   px: 3,
                   py: 2,
                   borderRadius: "8px",
-                  marginBottom: 1,
+                  marginBottom: 1.5,
+                  transition: "background-color 0.2s",
+                  "&:hover": {
+                    backgroundColor: selectedChat === chat ? "#3182CE" : "#E2E8F0",
+                  },
                 }}
               >
-                <Typography sx={{ textTransform: "capitalize" }}>
+                <Typography sx={{ textTransform: "capitalize", fontWeight: selectedChat === chat ? "600" : "500" }}>
                   {!chat.isGroupChat
                     ? getSender(loggedUser, chat.users)
                     : chat.chatName}

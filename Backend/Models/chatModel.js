@@ -18,6 +18,10 @@ const chatModel = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
+    chatBackground: {
+      type: String,
+      default: "#FAFBFB",
+    },
   },
   {
     timestamps: true,

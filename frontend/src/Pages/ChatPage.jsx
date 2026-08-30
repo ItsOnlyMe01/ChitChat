@@ -17,7 +17,8 @@ const ChatPage = () => {
           display: "flex",
           width: "100%",
           justifyContent: "center",
-          height: "100vh",
+          height: "calc(100vh - 65px)",
+          overflow: "hidden",
         }}
       >
         {user && <MyChat fetchAgain={fetchAgain} />}

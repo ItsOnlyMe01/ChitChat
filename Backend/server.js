@@ -7,7 +7,7 @@ const messageRoutes = require("./Routes/messageRoutes");
 const translateRoutes = require("./Routes/transalteRoutes");
 const { notFound, errorHandlers } = require("./middlewares/errorMiddleware");
 const path = require("path");
-require("dotenv").config({ path: "../.env" });
+require("dotenv").config({ path: path.join(__dirname, "../.env") });
 
 connectDB();
 app.use(express.json());
@@ -17,21 +17,21 @@ app.use("/api/chat", chatRoutes);
 app.use("/api/message", messageRoutes);
 app.use("/api/translate", translateRoutes);
 
-//-----------------------------------DEPLOYMENT------------------------
+// //-----------------------------------DEPLOYMENT------------------------
 
-const __dirname1 = path.resolve();
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname1, "frontend/dist")));
-  app.get("*", (_, res) => {
-    res.sendFile(path.resolve(__dirname1, "frontend", "dist", "index.html"));
-  });
-} else {
-  app.get("/", (req, res) => {
-    res.send("Api is Running Succesfully!");
-  });
-}
+// const __dirname1 = path.resolve();
+// if (process.env.NODE_ENV === "production") {
+//   app.use(express.static(path.join(__dirname1, "frontend/dist")));
+//   app.get("*", (_, res) => {
+//     res.sendFile(path.resolve(__dirname1, "frontend", "dist", "index.html"));
+//   });
+// } else {
+//   app.get("/", (req, res) => {
+//     res.send("Api is Running Succesfully!");
+//   });
+// }
 
-//-----------------------------------DEPLOYMENT------------------------
+// //-----------------------------------DEPLOYMENT------------------------
 
 app.use(notFound);
 app.use(errorHandlers);
@@ -44,7 +44,7 @@ const server = app.listen(PORT, () => {
 const io = require("socket.io")(server, {
   pingTimeout: 60000,
   cors: {
-    origin: "*",
+    origin: ["https://chitchat-hsxm.onrender.com", "http://localhost:5173", "http://localhost:5174"],
   },
 });
 
@@ -62,6 +62,10 @@ io.on("connection", (socket) => {
 
   socket.on("typing", (room) => socket.in(room).emit("typing"));
   socket.on("Stop typing", (room) => socket.in(room).emit("Stop typing"));
+  
+  socket.on("change background", ({ chatId, background }) => {
+    socket.in(chatId).emit("background updated", { chatId, background });
+  });
 
   socket.on("new message", async (newMessageRecived) => {
     var chat = newMessageRecived.chat;
