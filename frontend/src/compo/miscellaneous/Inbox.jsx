@@ -20,7 +20,7 @@ const Inbox = ({ fetchAgain, setFetchAgain }) => {
         borderRadius: { xs: 0, md: "12px" },
         border: { xs: "none", md: "1px solid #E2E8F0" },
         boxShadow: "0 1px 3px 0 rgba(0,0,0,0.05)",
-        overflowY: "auto",
+        overflowY: "hidden",
       }}
     >
       <SingleChat fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />

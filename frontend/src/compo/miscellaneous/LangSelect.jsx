@@ -19,41 +19,26 @@ export default function LangSelect() {
   };
 
   return (
-    <Box
-      sx={{
-        display: "inline-flex",
-        alignItems: "center",
-        position: "relative",
-        borderRadius: "25px",
-        boxShadow: 2,
-        bgcolor: "#f0f0f0",
-        padding: "2px 5px",
-        cursor: "pointer",
-        "&:hover": {
-          bgcolor: "#e0e0e0",
-        },
-      }}
-    >
+    <Box>
       <Button
         aria-controls="language-menu"
         aria-haspopup="true"
         onClick={handleClick}
+        startIcon={<LanguageIcon sx={{ fontSize: 18, color: "#4A5568" }} />}
         sx={{
-          display: "flex",
-          alignItems: "center",
-          gap: "5px",
-          backgroundColor: "transparent",
-          borderRadius: "25px",
-          padding: "5px 10px",
+          textTransform: "uppercase",
+          color: "#4A5568",
+          fontWeight: "600",
+          fontSize: { xs: "0.75rem", sm: "0.85rem" },
+          padding: "4px 8px",
+          borderRadius: "8px",
+          minWidth: "auto",
           "&:hover": {
-            backgroundColor: "transparent",
+            backgroundColor: "#EDF2F7",
           },
         }}
       >
-        <LanguageIcon sx={{ fontSize: 20, color: "#555" }} />
-        <Typography variant="body1" sx={{ fontWeight: "bold", color: "#555" }}>
-          {selectedLanguage}
-        </Typography>
+        {selectedLanguage === "Off" || selectedLanguage === "off" ? "Translate" : selectedLanguage}
       </Button>
 
       <Menu

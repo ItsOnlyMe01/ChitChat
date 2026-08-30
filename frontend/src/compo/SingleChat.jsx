@@ -165,7 +165,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
   const translatedMessage = async (message, language) => {
     try {
-      if (language !== "Off") {
+      const isTranslationOn = language && language.toLowerCase() !== "off";
+      if (isTranslationOn) {
         console.log(`Translating to: ${language}`);
         const response = await fetch("api/translate", {
           method: "POST",
@@ -319,14 +320,14 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   };
 
   return (
-    <>
+    <Box sx={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", overflow: "hidden" }}>
       {selectedChat ? (
         <>
           <Typography
             sx={{
-              fontSize: { xs: "28px", md: "30px" },
-              paddingBottom: 3,
-              px: 2,
+              fontSize: { xs: "20px", md: "30px" },
+              paddingBottom: { xs: 1.5, md: 3 },
+              px: { xs: 1, md: 2 },
               width: "100%",
               fontFamily: "Work sans",
               display: "flex",
@@ -421,7 +422,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               justifyContent: "flex-end",
               padding: 2,
               width: "100%",
-              height: "100%",
+              flex: 1,
               borderRadius: "12px",
               border: "1px solid #E2E8F0",
               overflow: "hidden",
@@ -551,7 +552,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           </Typography>
         </Box>
       )}
-    </>
+    </Box>
   );
 };
 

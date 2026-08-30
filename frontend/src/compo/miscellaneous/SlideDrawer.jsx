@@ -12,7 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import CircleNotificationsIcon from "@mui/icons-material/CircleNotifications";
+import NotificationsIcon from "@mui/icons-material/Notifications";
 import { ChatState } from "../context/chatProvider";
 import ProfileModal from "./ProfileModal";
 import { useNavigate } from "react-router-dom";
@@ -138,7 +138,7 @@ const SlideDrawer = () => {
           alignItems: "center",
           backgroundColor: "white",
           width: "100%",
-          padding: "8px 24px",
+          padding: { xs: "8px 12px", md: "8px 24px" },
           borderBottom: "1px solid #E2E8F0",
         }}
       >
@@ -146,8 +146,7 @@ const SlideDrawer = () => {
           title="Search User!"
           onClick={toggleDrawer(true)}
           sx={{
-            gap: "10px",
-            padding: "4px 15px 4px 15px",
+            padding: "4px 8px",
             borderRadius: "30px",
           }}
         >
@@ -159,10 +158,12 @@ const SlideDrawer = () => {
               color: "#4A5568",
               fontWeight: "medium",
               borderRadius: "20px",
+              minWidth: "auto",
+              padding: { xs: "6px 8px", md: "6px 16px" },
               "&:hover": { backgroundColor: "#EDF2F7" },
             }}
           >
-            Search User
+            {!isMobile && "Search User"}
           </Button>
         </Tooltip>
         {!isMobile && (
@@ -171,19 +172,29 @@ const SlideDrawer = () => {
           </Typography>
         )}
 
-        <div
-          style={{
+        <Box
+          sx={{
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
+            gap: { xs: 0.5, sm: 2 },
           }}
         >
-          <LangSelect style={{ marginRight: "30px" }} />
-          <Button onClick={handleNotificationClick}>
-            <Badge badgeContent={notification.length} color="primary">
-              <CircleNotificationsIcon sx={{ fontSize: 35 }} />
+          <LangSelect />
+          
+          <IconButton
+            onClick={handleNotificationClick}
+            sx={{
+              color: "#4A5568",
+              padding: "8px",
+              "&:hover": { backgroundColor: "#EDF2F7" },
+            }}
+          >
+            <Badge badgeContent={notification.length} color="error">
+              <NotificationsIcon sx={{ fontSize: 24 }} />
             </Badge>
-          </Button>
+          </IconButton>
+
           <Menu
             anchorEl={anchorElNotification}
             open={Boolean(anchorElNotification)}
@@ -194,31 +205,40 @@ const SlideDrawer = () => {
                 No new messages!
               </MenuItem>
             ) : (
-              notification.map((notif) => (
-                <MenuItem
-                  key={notif._id}
-                  onClick={() => {
-                    setSelectedChat(notif.chat);
-                    setNotification(notification.filter((n) => n !== notif));
-                    handleNotificationClose();
-                  }}
-                >
-                  {notif.chat.isGroupChat
-                    ? `New message in ${notif.chat.chatName}`
-                    : `New message from ${getSender(user, notif.chat.users)}`}
-                </MenuItem>
-              ))
+              notification.map((notif) => {
+                const chat = notif.chat;
+                if (!chat) return null;
+                const senderName = chat.isGroupChat
+                  ? chat.chatName
+                  : (chat.users && chat.users.length > 0
+                      ? getSender(user, chat.users)
+                      : "New Message");
+                return (
+                  <MenuItem
+                    key={notif._id}
+                    onClick={() => {
+                      setSelectedChat(chat);
+                      setNotification(notification.filter((n) => n !== notif));
+                      handleNotificationClose();
+                    }}
+                  >
+                    {chat.isGroupChat
+                      ? `New message in ${chat.chatName}`
+                      : `New message from ${senderName}`}
+                  </MenuItem>
+                );
+              })
             )}
           </Menu>
 
-          <Button onClick={handleProfileClick}>
+          <Button onClick={handleProfileClick} sx={{ minWidth: "auto", padding: 0 }}>
             <Avatar
               src={user.pic}
               name={user.name}
               sx={{
-                width: 35,
-                height: 35,
-                border: "2px solid #fff",
+                width: 32,
+                height: 32,
+                border: "1px solid #E2E8F0",
               }}
             />
           </Button>
@@ -235,7 +255,7 @@ const SlideDrawer = () => {
               Logout
             </MenuItem>
           </Menu>
-        </div>
+        </Box>
       </Box>
 
       <Drawer open={open} onClose={toggleDrawer(false)}>
